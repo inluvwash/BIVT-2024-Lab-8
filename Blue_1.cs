@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Lab_8
 {
     public class Blue_1 : Blue
@@ -26,34 +27,34 @@ namespace Lab_8
             }
 
             string[] words = Input.Split(' ');
-
             string[] temp = new string[words.Length];
             int lineCount = 0;
-            string current = "";
+            string currentLine = "";
 
             foreach (string word in words)
             {
                 if (word == "")
                     continue;
 
-                if (current != "" && current.Length + 1 + word.Length > 50)
+                if (currentLine == "")
                 {
-                    temp[lineCount] = current;
-                    lineCount++;
-                    current = word;
+                    currentLine = word;
+                }
+                else if (currentLine.Length + 1 + word.Length <= 50)
+                {
+                    currentLine += " " + word;
                 }
                 else
                 {
-                    if (current != "")
-                        current += " " + word;
-                    else
-                        current = word;
+                    temp[lineCount] = currentLine;
+                    lineCount++;
+                    currentLine = word;
                 }
             }
 
-            if (current != "")
+            if (currentLine != "")
             {
-                temp[lineCount] = current;
+                temp[lineCount] = currentLine;
                 lineCount++;
             }
 

@@ -15,14 +15,14 @@ namespace Lab_8
         {
             _output = null;
             _series = series;
-            
+
         }
 
         public string Output => _output;
 
         public override void Review()
         {
-            _output = ""; 
+            _output = "";
 
             if (Input == null || Input.Length == 0)
                 return;
@@ -35,15 +35,23 @@ namespace Lab_8
             {
                 char c = Input[i];
 
-                if (c == ' ')
+                if (c == ' ' || c == '.' || c == ',')
                 {
                     if (current.Length > 0 && wordValid)
                     {
-                        if (!first)
+                        if (!first && _output != "" && _output[_output.Length - 1] != ' ')
                             _output += " ";
                         _output += current;
                         first = false;
                     }
+
+                    
+                    if (c == '.' || c == ',')
+                    {
+                        _output += c;
+                        first = false;
+                    }
+
 
                     current = "";
                     wordValid = true;
@@ -68,10 +76,9 @@ namespace Lab_8
                         wordValid = false;
                 }
             }
-
             if (current.Length > 0 && wordValid)
             {
-                if (!first)
+                if (!first && _output.Length > 0 && _output[_output.Length - 1] != ' ')
                     _output += " ";
                 _output += current;
             }
