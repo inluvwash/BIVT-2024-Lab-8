@@ -20,11 +20,9 @@ namespace Lab_8
                 return;
             }
 
-
-
             var separators = new[] { ' ', '.', '!', '?', ',', ':', '"', ';', '–', '(', ')', '[', ']', '{', '}', '/' };
-            var words = Input.Split(separators)
-                           .Where(w => !string.IsNullOrEmpty(w) && char.IsLetter(w[0]))
+            var words = Input.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                           .Where(w => w.Length > 0 && char.IsLetter(w[0]))
                            .Select(w => w.ToLower());
 
             int totalWords = words.Count();
@@ -34,16 +32,13 @@ namespace Lab_8
                 return;
             }
 
-            var letterGroups = words.GroupBy(w => w[0])
-                                  .Select(g => new
-                                  {
-                                      Letter = g.Key,
-                                      Count = g.Count(),
-                                      Percentage = Math.Round(g.Count() * 100.0 / totalWords, 4)
-                                  })
-                                  .OrderByDescending(x => x.Percentage)
-                                  .ThenBy(x => x.Letter)
-                                  .Distinct();//  для устранения дубликатов
+            var letterGroups = words
+                .GroupBy(w => w[0])
+                .Select(g => (Letter: g.Key, Count: g.Count(), Percentage: Math.Round(g.Count() * 100.0 / totalWords, 4)))
+                .OrderByDescending(x => x.Percentage)
+                .ThenBy(x => x.Letter)
+                .Distinct()
+                .ToArray();
 
             _output = letterGroups.Select(x => (x.Letter, x.Percentage)).ToArray();
         }
@@ -53,7 +48,7 @@ namespace Lab_8
             if (_output == null || _output.Length == 0)
                 return "";
 
-            return string.Join("\n", _output.Select(x => $"{x.Item1} - {x.Item2:F4}")) + "\n";
+            return string.Join("\n", _output.Select(x => $"{x.Item1} - {x.Item2:F4}"));
         }
     }
 }

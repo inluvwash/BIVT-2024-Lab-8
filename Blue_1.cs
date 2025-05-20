@@ -11,58 +11,51 @@ namespace Lab_8
     {
         private string[] _output;
 
+        public string[] Output => _output;
         public Blue_1(string input) : base(input)
         {
             _output = null;
         }
 
-        public string[] Output => _output;
+        
 
         public override void Review()
         {
-            if (string.IsNullOrEmpty(Input))
-            {
-                _output = null;
-                return;
-            }
+            if (String.IsNullOrEmpty(Input)) return;
 
-            string[] words = Input.Split(' ');
+            var words = Input.Split(' ');
             string[] temp = new string[words.Length];
             int lineCount = 0;
-            string currentLine = "";
+            var currentLine = new StringBuilder();
 
-            foreach (string word in words)
+            foreach (var word in words)
             {
-                if (word == "")
-                    continue;
-
-                if (currentLine == "")
+                if (currentLine.Length + word.Length + 1 <= 50)
                 {
-                    currentLine = word;
-                }
-                else if (currentLine.Length + 1 + word.Length <= 50)
-                {
-                    currentLine += " " + word;
+                    if (currentLine.Length > 0) currentLine.Append(' ');
+                    
+                    currentLine.Append(word);
                 }
                 else
                 {
-                    temp[lineCount] = currentLine;
+                    temp[lineCount] = currentLine.ToString();
+
+
                     lineCount++;
-                    currentLine = word;
+
+                    currentLine.Clear();
+                    currentLine.Append(word);
                 }
             }
 
-            if (currentLine != "")
+            if (currentLine.Length > 0)
             {
-                temp[lineCount] = currentLine;
+                temp[lineCount] = currentLine.ToString();
                 lineCount++;
             }
 
-            _output = new string[lineCount];
-            for (int i = 0; i < lineCount; i++)
-            {
-                _output[i] = temp[i];
-            }
+            Array.Resize(ref temp, lineCount);
+            _output = temp;
         }
 
         public override string ToString()
