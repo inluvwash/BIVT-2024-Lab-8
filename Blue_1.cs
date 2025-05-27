@@ -24,7 +24,7 @@ namespace Lab_8
             if (String.IsNullOrEmpty(Input)) return;
 
             var words = Input.Split(' ');
-            string[] temp = new string[words.Length];
+            string[] temp = new string[500];
             int lineCount = 0;
             var currentLine = new StringBuilder();
 
@@ -60,8 +60,8 @@ namespace Lab_8
 
         public override string ToString()
         {
-            if (_output == null || _output.Length == 0)
-                return string.Empty;
+            if (_output == null || _output.Length == 0) return null;
+                
 
             return string.Join(Environment.NewLine, _output);
         }
